@@ -8,24 +8,50 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 
 const fontSans = FontSans({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "700"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: `${DATA.name} - ${DATA.title} | Resume & Portfolio`,
+    template: `%s | ${DATA.name} - ${DATA.title}`,
   },
-  description: DATA.description,
+  description: `${DATA.name}, ${DATA.title}. Explore my portfolio, skills, and projects. Contact me for opportunities!`,
+  keywords: [
+    `${DATA.name}`,
+    `${DATA.title}`,
+    "portfolio",
+    "resume",
+    "skills",
+    "projects",
+  ],
+  alternates: {
+    canonical: DATA.url,
+  },
   openGraph: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} - ${DATA.title}`,
     description: DATA.description,
     url: DATA.url,
     siteName: `${DATA.name}`,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: `${DATA.url}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: `${DATA.name} Portfolio`,
+      },
+    ],
+  },
+  twitter: {
+    title: `${DATA.name} - ${DATA.title}`,
+    card: "summary_large_image",
+    images: [`${DATA.url}/og-image.jpg`],
   },
   robots: {
     index: true,
@@ -38,13 +64,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  twitter: {
-    title: `${DATA.name}`,
-    card: "summary_large_image",
-  },
   verification: {
-    google: "",
-    yandex: "",
+    google: "your-google-verification-code",
+    yandex: "your-yandex-verification-code",
   },
 };
 
@@ -54,7 +76,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={"en"} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: DATA.name,
+              jobTitle: DATA.description,
+              url: DATA.url,
+              sameAs: [
+                DATA.contact.social?.X.url,
+                DATA.contact.social?.LinkedIn.url,
+                DATA.contact.social?.GitHub.url,
+              ],
+            }),
+          }}
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6",
@@ -63,8 +104,10 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="light">
           <TooltipProvider delayDuration={0}>
-            {children}
-            <Navbar />
+            <header>
+              <Navbar />
+            </header>
+            <main>{children}</main>
           </TooltipProvider>
         </ThemeProvider>
       </body>

@@ -3,6 +3,7 @@ import { HomeIcon, NotebookIcon } from "lucide-react";
 
 export const DATA = {
   name: "Mohammadreza Amani",
+  title: "Software Engineer",
   initials: "MA",
   url: "https://moamani.ir",
   location: "Tehran, Iran",
@@ -60,10 +61,24 @@ export const DATA = {
       },
       email: {
         name: "Send Email",
-        url: "#",
+        url: "mailto:more.amani@yahoo.com",
         icon: Icons.email,
 
-        navbar: false,
+        navbar: true,
+      },
+      phone: {
+        name: "Phone",
+        url: "tel:+989352462779",
+        icon: Icons.phone,
+
+        navbar: true,
+      },
+      resume: {
+        name: "Resume",
+        url: "/assets/cv/Mohammadreza_Amani_CV.pdf",
+        icon: Icons.resume,
+
+        navbar: true,
       },
     },
   },
